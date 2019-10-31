@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+}
+.text-center {
+    text-align: center;
+}
+
+.page-enter-active, .page-leave-active {
+    transition: opacity .35s;
+}
+
+.page-enter, .page-leave {
+    opacity: 0;
+}
