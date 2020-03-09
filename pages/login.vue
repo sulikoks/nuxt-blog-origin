@@ -1,10 +1,10 @@
 <template>
     <div class="login">
-        <el-form 
-        :model="controls" 
-        :rules="rules" 
-        ref="form"
-        @submit.native.prevent="onSubmit"
+        <el-form
+            :model="controls"
+            :rules="rules"
+            ref="form"
+            @submit.native.prevent="onSubmit"
         >
             <h1 class="text-center">Вход</h1>
             <el-form-item label="Логин" prop="login">
@@ -14,16 +14,16 @@
                 <el-input type="password" v-model.trim="controls.password"/>
             </el-form-item>
             <el-form-item class="form__footer">
-                <el-button 
-                type="primary" 
-                native-type="submit"
-                round
-                :loading="loading"
+                <el-button
+                    type="primary"
+                    native-type="submit"
+                    round
+                    :loading="loading"
                 >
-                Войти
+                    Войти
                 </el-button>
                 <nuxt-link to="/">
-                <el-button round>Отмена</el-button>
+                    <el-button round>Отмена</el-button>
                 </nuxt-link>
             </el-form-item>
         </el-form>
@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import { async } from 'q';
 export default {
     layout: 'empty',
     data: () => ({
@@ -42,31 +41,28 @@ export default {
         },
         rules: {
             login: [
-                {required: true, message: 'Введите логин', trigger: 'blur'}
+                { required: true, message: 'Введите логин', trigger: 'blur' }
             ],
             password: [
-                {required: true, message: 'Введите пароль', trigger: 'blur'},
-                {min: 6, message: 'Пароль должен быть больше 6', trigger: 'blur'}
+                { required: true, message: 'Введите пароль', trigger: 'blur' },
+                { min: 6, message: 'Пароль должен быть больше 6', trigger: 'blur' }
             ]
         }
     }),
-    /////////////////////////// Запустакается только на клиенте И только после програзки ДОМ
-    mounted() { 
+    mounted() { // Запустакается только на клиенте И только после програзки ДОМ
         const message = this.$route.query.msg
-        //debugger
         switch (message) {
             case 'admin':
-                this.$message.warning('Требуются права администратора') 
-                //debugger
+                this.$message.warning('Требуются права администратора')
                 break
             case 'logout':
-                this.$message.info('Вы вышли из системы') 
+                this.$message.info('Вы вышли из системы')
                 break
         }
     },
     methods: {
         onSubmit() {
-            this.$refs.form.validate(async (valid) => {
+            this.$refs.form.validate(async valid => {
                 if (valid) {
                     try {
                         this.loading = true
@@ -74,17 +70,18 @@ export default {
                             login: this.controls.login,
                             password: this.controls.password
                         }
-                        //debugger;  //Дебажить код на ошибки
-                        //const access = 
                         await this.$store.dispatch('auth/login', formData)
-                        //if (access) {
+                        const access = this.$store.getters['auth/isAuth']
+                        if (access) {
                             this.$message.success('Вы вошли')
                             this.$router.push('/admin')
-                        //} else {
-                        //    this.$message.success('Вы пидар')
-                        //    this.$router.push('/')
-                        //}
+                        } else {
+                           this.$message.error('Вы пидар')
+                           this.$router.push('/')
+                        }
                     } catch (e) {
+                        throw Error(e)
+                    } finally {
                         this.loading = false
                     }
                 }

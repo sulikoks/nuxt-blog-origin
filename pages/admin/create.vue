@@ -122,6 +122,7 @@ export default {
     .form__prev{
         display: flex;
         justify-content: space-between;
+
         .btn{
             height: 40px;
         }
